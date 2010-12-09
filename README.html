@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Visify Demo</title>
+    <!--[if gte IE 5]>
+      <link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen"/>
+      <script type="text/javascript" src="excanvas.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="jquery.min.js"></script> 
+    <script type="text/javascript" src="jquery.visify.js"></script> 
+  </head>
+  <style type="text/css">
+    body { background-color: #eee; font-family: Arial; }
+    h1 { margin: auto; width: 80%; font-size: 36px; }
+    a { color: #333333; }
+    .container { width: 80%; background-color: #fff; border: 1px solid #B5B5B5; margin: 20px auto 20px auto; }
+    .title { border-bottom: 1px solid #B5B5B5; padding: 20px; font-weight: bold; font-size: 22px; }
+    .body { margin: 20px 0 20px 0; }
+    p, h3 { margin: 20px; }
+  </style>
+  <body>
+    <a href="http://github.com/danielwestendorf/visify"><h1>VISIFY.JS</h1></a>
+    <div class="container">
+      <div class="title">A QUICK EXPLAINATION</div>
+      <p>
+        As it stands, the Visify.js jQuery plugin provided on this page is ment to create bar charts for data in the form bytes. It will convert the largest value passed to its nearest unit (1024 bytes => 1KB), and scale the rest of the data to that unit (512 bytes => 0.5KB). It can be styled via CSS and accepts some options for your customization. It can handle multiple bar segments if multiple data values are passed per object, creating stacked bars. It uses the <code>&lt;canvas&gt;</code> tag to draw the graph. If the canvas tag is not supported (Lookin' at you IE), <a href="http://excanvas.sourceforge.net/">excanvas.js</a> will be included.
+      </p>
+    </div>
+    <div class="container">
+      <div class="title">EXAMPLE 1</div>
+      <div id="Example1" class="body" style="width: 100%; height: 400px; font-family: Arial; background-color: #fff; font-size: 15px;"></div>
+    </div>
+    <div class="container">
+      <div class="title">USAGE</div>
+      <p>
+        USING THE PLUGIN: Visify expects three arguments, with an optional fourth argument for the options hash.<br /> <br />
+        <code>
+          $('#myBlockElement').visify(data, subjectKey, dataKeys, optionsHash);
+        </code><br /><br />
+        THE DATA: All of the data passed to the plugin must be in byte form. It will be converted to KB, MB, GB, TB, PB, or XB appropriately. The data must be an array of Hashes. Each hash should have the same keys and a subject/name for each data set. Add more keys for more bar segments.<br /><br /> 
+        <code>
+          topTransferData = [<br />
+              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Jimmy"},<br />
+              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Clyde"},<br />
+              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Roger"},<br />
+              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Mick"}<br />
+          ]
+        </code><br /> <br />
+        THE SUBJECT AND DATA KEYS: The subject key should be a JavaScript string of the key representing your dataset's name/title/subject. The data keys should be a Javascript Array of strings representing the keys of your data values.<br /><br />
+        <code>
+          subjectKey = "Name";<br />
+          dataKeys = ["Uploaded Data", "Downloaded Data"]
+        </code><br /><br />
+        THE OPTIONS HASH: The options hash accepts a number of options to customize your bar chart. It is not required.<br /><br />
+        <code>
+          optionsHash = {<br />
+          &nbsp;'barWidth':&nbsp;&nbsp;&nbsp;50, \\This is the width of each bar in pixles<br />
+          &nbsp;'barSpacing':&nbsp;&nbsp;&nbsp;55, \\This is the width between each bar<br />
+          &nbsp;'backgroundColor':&nbsp;&nbsp;&nbsp;"#fff", \\This is the background color you want the graph to have. It inherits the containing elment's CSS valueby default.<br />
+          &nbsp;'fontSize':&nbsp;&nbsp;&nbsp;15, \\This is the size of the font used in the graph. It inherits the containing element's CSS value by default.<br />
+          &nbsp;'fontFamily':&nbsp;&nbsp;&nbsp;"Arial", \\This is the font family used in the graph. It inherits the containing element's CSS value by default.<br />
+          &nbsp;'colors':&nbsp;&nbsp;&nbsp;[{"R": 210, "G": 49, "B": 42}, {"R": 45, "G": 146, "B": 255}, {"R": 249, "G": 159, "B": 0}, {"R": 105, "G": 151, "B": 47}], \\This is an Array of Hash value RGB colors to use for the bar colors. Make sure to pass at least as many colors as you have bar segments. <br />
+          &nbsp;'graphLines':&nbsp;&nbsp;&nbsp;5, \\This is the number of horizontal graph lines you want to see.<br />
+          &nbsp;'rounder':&nbsp;&nbsp;&nbsp;1, \\This is the number minimum number of decimal places you want to see, excluding zeros after the decimal. Add a zero for each decimal place (1 => 2GB, 10 => 2.1GB, 100 => 2.12GB, etc)<br />
+          }
+        </code>
+      </p>
+    </div>
+    <div class="container">
+      <div class="title">LICENSE</div>
+      <p>
+        Copyright (c) 2010 Daniel Westendorf<br />
+        <br />
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br />
+        <br />
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.<br />
+        <br />
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+      </p>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function() {
+         topTransferData = []
+         topTransferData.push({"Uploaded Data": 2428212013, "Downloaded Data": 2947685350, "Deleted Data": 6623443344, "Subject" : "Jim" })
+         topTransferData.push({"Uploaded Data": 1529346155, "Downloaded Data": 5012451292, "Deleted Data": 0, "Subject" : "Bob" })
+         topTransferData.push({"Uploaded Data": 2300541588, "Downloaded Data": 3559046788, "Deleted Data": 6442344444, "Subject" : "Ed" })
+         topTransferData.push({"Uploaded Data": 0, "Downloaded Data": 0, "Deleted Data": 5432344444, "Subject" : "Sam" })
+         topTransferData.push({"Uploaded Data": 6600541588, "Downloaded Data": 300541588, "Deleted Data": 4442344444, "Subject" : "Steve" })
+         topTransferData.push({"Uploaded Data": 4301541588, "Downloaded Data": 0, "Deleted Data": 0, "Subject" : "Bill" })
+         topTransferData.push({"Uploaded Data": 6370541588, "Downloaded Data": 3200541588, "Deleted Data": 1322344444, "Subject" : "Clark" })
+           
+         $('#Example1').visify(topTransferData, "Subject", ["Uploaded Data", "Downloaded Data", "Deleted Data"], {'barWidth': 50, 'barSpacing' : 55});
+      })
+    </script>
+  </body>
+</html>
