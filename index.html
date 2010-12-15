@@ -6,8 +6,9 @@
       <link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen"/>
       <script type="text/javascript" src="https://github.com/danielwestendorf/Visify.js/raw/master/excanvas.min.js"></script>
     <![endif]-->
-    <script type="text/javascript" src="https://github.com/danielwestendorf/Visify.js/raw/master/jquery.min.js"></script> 
-    <script type="text/javascript" src="https://github.com/danielwestendorf/Visify.js/raw/master/jquery.visify.js"></script> 
+    <script type="text/javascript" src="http://github.com/danielwestendorf/Visify.js/raw/master/jquery.min.js"></script> 
+    <script type="text/javascript" src="http://github.com/danielwestendorf/Visify.js/raw/master/jquery.visify.js"></script> 
+    <script type="text/javascript" src="http://github.com/danielwestendorf/Visify.js/raw/master/jquery.visify.byteme.js"></script> 
   </head>
   <style type="text/css">
     body { background-color: #eee; font-family: Arial; }
@@ -17,18 +18,34 @@
     .title { border-bottom: 1px solid #B5B5B5; padding: 20px; font-weight: bold; font-size: 22px; }
     .body { margin: 20px 0 20px 0; }
     p, h3 { margin: 20px; }
+    td { padding: 5px; }
+    table { border: 1px solid #B5B5B5; width: 90%; margin: auto; }
+    table th { background-color: #B5B5B5; }
+    .odd { background-color: #F2F2F2; }
   </style>
   <body>
     <a href="http://github.com/danielwestendorf/visify.js"><h1>VISIFY.JS</h1></a>
     <div class="container">
       <div class="title">A QUICK EXPLAINATION</div>
       <p>
-        As it stands, the Visify.js jQuery plugin provided on this page is ment to create bar charts for data in the form bytes. It will convert the largest value passed to its nearest unit (1024 bytes => 1KB), and scale the rest of the data to that unit (512 bytes => 0.5KB). It can be styled via CSS and accepts some options for your customization. It can handle multiple bar segments if multiple data values are passed per object, creating stacked bars. It uses the <code>&lt;canvas&gt;</code> tag to draw the graph. If the canvas tag is not supported (Lookin' at you IE), <a href="http://excanvas.sourceforge.net/">excanvas.js</a> will be included.
+        As it stands, the Visify.js jQuery plugin provided on this page is ment to create stacked bar charts. It enables you to create classes to convert the data to a human readable format, and pass it to the plugin. It can be styled via CSS and accepts some options for your customization. It can handle multiple bar segments if multiple data values are passed per object, creating stacked bars. It uses the <code>&lt;canvas&gt;</code> tag to draw the graph. If the canvas tag is not supported (Lookin' at you IE), <a href="http://excanvas.sourceforge.net/">excanvas.js</a> will be included.
       </p>
     </div>
     <div class="container">
-      <div class="title">EXAMPLE 1</div>
+      <div class="title">PLAIN NUMBERS EXAMPLE</div>
       <div id="Example1" class="body" style="width: 100%; height: 400px; font-family: Arial; background-color: #fff; font-size: 15px;"></div>
+      <p>
+        <code>
+          numberSwappin = [<br />
+            &nbsp;{"Numbers In": 10, "Numbers Out": 44, "Name": "Jimmy"},<br />
+            &nbsp;{"Numbers In": 20, "Numbers Out": 74, "Name": "Clyde"},<br />
+            &nbsp;{"Numbers In": 30, "Numbers Out": 70, "Name": "Roger"},<br />
+            &nbsp;{"Numbers In": 40, "Numbers Out": 50, "Name": "Mick"}<br />
+          ]<br />
+          <br />
+          $('#Example1').visify(numberSwappin, "Name", ["Numbers In", "Numbers Out"], {'barWidth': 50, 'barSpacing' : 55});
+        </code>
+      </p>
     </div>
     <div class="container">
       <div class="title">USAGE</div>
@@ -39,30 +56,156 @@
         </code><br /><br />
         THE DATA: All of the data passed to the plugin must be in byte form. It will be converted to KB, MB, GB, TB, PB, or XB appropriately. The data must be an array of Hashes. Each hash should have the same keys and a subject/name for each data set. Add more keys for more bar segments.<br /><br /> 
         <code>
-          topTransferData = [<br />
-              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Jimmy"},<br />
-              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Clyde"},<br />
-              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Roger"},<br />
-              &nbsp;{"Uploaded Data": 123456789, "Downloaded Data": 987654321, "Name": "Mick"}<br />
+          numberSwappin = [<br />
+              &nbsp;{"Numbers In": 10, "Numbers Out": 44, "Name": "Jimmy"},<br />
+              &nbsp;{"Numbers In": 20, "Numbers Out": 74, "Name": "Clyde"},<br />
+              &nbsp;{"Numbers In": 30, "Numbers Out": 70, "Name": "Roger"},<br />
+              &nbsp;{"Numbers In": 40, "Numbers Out": 50, "Name": "Mick"}<br />
           ]
         </code><br /> <br />
         THE SUBJECT AND DATA KEYS: The subject key should be a JavaScript string of the key representing your dataset's name/title/subject. The data keys should be a Javascript Array of strings representing the keys of your data values.<br /><br />
         <code>
           subjectKey = "Name";<br />
-          dataKeys = ["Uploaded Data", "Downloaded Data"]
+          dataKeys = ["Numbers In", "Numbers Out"]
         </code><br /><br />
         THE OPTIONS HASH: The options hash accepts a number of options to customize your bar chart. It is not required.<br /><br />
         <code>
           optionsHash = {<br />
-          &nbsp;'barWidth':&nbsp;&nbsp;&nbsp;50, \\This is the width of each bar in pixles<br />
-          &nbsp;'barSpacing':&nbsp;&nbsp;&nbsp;55, \\This is the width between each bar<br />
-          &nbsp;'backgroundColor':&nbsp;&nbsp;&nbsp;"#fff", \\This is the background color you want the graph to have. It inherits the containing elment's CSS valueby default.<br />
-          &nbsp;'fontSize':&nbsp;&nbsp;&nbsp;15, \\This is the size of the font used in the graph. It inherits the containing element's CSS value by default.<br />
-          &nbsp;'fontFamily':&nbsp;&nbsp;&nbsp;"Arial", \\This is the font family used in the graph. It inherits the containing element's CSS value by default.<br />
-          &nbsp;'colors':&nbsp;&nbsp;&nbsp;[{"R": 210, "G": 49, "B": 42}, {"R": 45, "G": 146, "B": 255}, {"R": 249, "G": 159, "B": 0}, {"R": 105, "G": 151, "B": 47}], \\This is an Array of Hash value RGB colors to use for the bar colors. Make sure to pass at least as many colors as you have bar segments. <br />
-          &nbsp;'graphLines':&nbsp;&nbsp;&nbsp;5, \\This is the number of horizontal graph lines you want to see.<br />
-          &nbsp;'rounder':&nbsp;&nbsp;&nbsp;1, \\This is the number minimum number of decimal places you want to see, excluding zeros after the decimal. Add a zero for each decimal place (1 => 2GB, 10 => 2.1GB, 100 => 2.12GB, etc)<br />
+          &nbsp;'barWidth':&nbsp;&nbsp;&nbsp;50,<br />
+          &nbsp;'barSpacing':&nbsp;&nbsp;&nbsp;55,<br />
+          &nbsp;'backgroundColor':&nbsp;&nbsp;&nbsp;"#fff",<br />
+          &nbsp;'fontSize':&nbsp;&nbsp;&nbsp;15,<br />
+          &nbsp;'fontFamily':&nbsp;&nbsp;&nbsp;"Arial",<br />
+          &nbsp;'colors':&nbsp;&nbsp;&nbsp;[{"R": 210, "G": 49, "B": 42}, {"R": 45, "G": 146, "B": 255},<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"R": 249, "G": 159, "B": 0}, {"R": 105, "G": 151, "B": 47}],<br />
+          &nbsp;'graphLines':&nbsp;&nbsp;&nbsp;5,<br />
+          &nbsp;'rounder':&nbsp;&nbsp;&nbsp;1,<br />
+          &nbsp;'converter':&nbsp;&nbsp;&nbsp;ClassName<br />
           }
+        </code>
+      </p>
+      <table cellspacing=0 >
+        <tr>
+          <th>OPTION</th>
+          <th>TYPE</th>
+          <th>EXPLAINATION</th>
+        </tr>
+        <tr>
+          <td>
+            barWidth
+          </td>
+          <td>
+            Integer
+          </td>
+          <td>
+            This is the width of each bar in pixles
+          </td>
+        </tr>
+        <tr>
+          <td>
+            barSpacing
+          </td>
+          <td>
+            Integer
+          </td>
+          <td>
+            This is the space between each bar in pixles
+          </td>
+        </tr>
+        <tr>
+          <td>
+            backgroundColor
+          </td>
+          <td>
+            String
+          </td>
+          <td>
+            This is the background color you want the graph to have. It inherits the containing elment's CSS valueby default
+          </td>
+        </tr>
+        <tr>
+          <td>
+            fontSize
+          </td>
+          <td>
+            Integer
+          </td>
+          <td>
+            This is the size of the font used in the graph. It inherits the containing element's CSS value by default
+          </td>
+        </tr>
+        <tr>
+          <td>
+            fontFamily
+          </td>
+          <td>
+            String
+          </td>
+          <td>
+            This is the font family used in the graph. It inherits the containing element's CSS value by default
+          </td>
+        </tr>
+        <tr>
+          <td>
+            colors
+          </td>
+          <td>
+            Array
+          </td>
+          <td>
+            This is an Array of Hash value RGB colors to use for the bar colors. Make sure to pass at least as many colors as you have bar segments
+          </td>
+        </tr>
+        <tr>
+          <td>
+            graphLines
+          </td>
+          <td>
+            Integer
+          </td>
+          <td>
+            This is the number of horizontal graph lines you want to see
+          </td>
+        </tr>
+        <tr>
+          <td>
+            rounder
+          </td>
+          <td>
+            Integer
+          </td>
+          <td>
+            This is the number minimum number of decimal places you want to see, excluding zeros after the decimal. Add a zero for each decimal place (1 => 2, 10 => 2.1, 100 => 2.12, etc)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Converter
+          </td>
+          <td>
+            Class
+          </td>
+          <td>
+            This is the name of the Custom Comverter class you want to modify the values by
+          </td>
+        </tr>
+      </table><br />
+    </div>
+    <div class="container">
+      <div class="title">BYTE EXAMPLE</div>
+      <p>
+        You can pass a custom class to convert your values into a more human readable format. An example of this is byte size data. You could represent the data in pure bytes, but humans have a more difficult time relating bytes to today's measurement units. For example, some people might not how to quantify 1024KB, but they may be able to relate to 1MB. Simply include the <a href="https://github.com/danielwestendorf/Visify.js/raw/master/jquery.visify.byteme.js">ByteMe</a> class, and pass it as an option.
+      </p>
+      <div id="ByteExample1" class="body" style="width: 100%; height: 400px; font-family: Arial; background-color: #fff; font-size: 15px;"></div>
+      <p>
+        <code>
+          topTransferData = [<br />
+            &nbsp;{"Uploaded Data": 1003233330, "Downloaded Data": 324288823, "Copied Data": 903499494, "Name": "Jimmy"},<br />
+            &nbsp;{"Uploaded Data": 339944893, "Downloaded Data": 0, "Copied Data": 349394390, "Name": "Clyde"},<br />
+            &nbsp;{"Uploaded Data": 0, "Downloaded Data": 2082492939, "Copied Data": 0, "Name": "Roger"},<br />
+            &nbsp;{"Uploaded Data": 28239899, "Downloaded Data": 1100000000, "Copied Data": 392999023, "Name": "Mick"}<br />
+          ]<br />
+          <br />
+        $('#ByteExample1').visify(topTransferData, "Name", ["Uploaded Data", "Downloaded Data", "Copied Data"], {'barWidth': 50, 'barSpacing' : 55, 'converter': ByteMe});
         </code>
       </p>
     </div>
@@ -79,17 +222,36 @@
       </p>
     </div>
     <script type="text/javascript">
+      
+
       $(document).ready(function() {
-         topTransferData = []
-         topTransferData.push({"Uploaded Data": 2428212013, "Downloaded Data": 2947685350, "Deleted Data": 6623443344, "Subject" : "Jim" })
-         topTransferData.push({"Uploaded Data": 1529346155, "Downloaded Data": 5012451292, "Deleted Data": 0, "Subject" : "Bob" })
-         topTransferData.push({"Uploaded Data": 2300541588, "Downloaded Data": 3559046788, "Deleted Data": 6442344444, "Subject" : "Ed" })
-         topTransferData.push({"Uploaded Data": 0, "Downloaded Data": 0, "Deleted Data": 5432344444, "Subject" : "Sam" })
-         topTransferData.push({"Uploaded Data": 6600541588, "Downloaded Data": 300541588, "Deleted Data": 4442344444, "Subject" : "Steve" })
-         topTransferData.push({"Uploaded Data": 4301541588, "Downloaded Data": 0, "Deleted Data": 0, "Subject" : "Bill" })
-         topTransferData.push({"Uploaded Data": 6370541588, "Downloaded Data": 3200541588, "Deleted Data": 1322344444, "Subject" : "Clark" })
-           
-         $('#Example1').visify(topTransferData, "Subject", ["Uploaded Data", "Downloaded Data", "Deleted Data"], {'barWidth': 50, 'barSpacing' : 55});
+        
+        //styling for the page
+        var cycle = "odd";
+        $('table tr').each(function() {
+          $(this).addClass(cycle);
+          cycle == "odd" ? cycle = "even" : cycle = "odd";
+        });
+
+        //actual plugin code Example 1
+        numberSwappin = [
+          {"Numbers In": 10, "Numbers Out": 44, "Name": "Jimmy"},
+          {"Numbers In": 20, "Numbers Out": 74, "Name": "Clyde"},
+          {"Numbers In": 30, "Numbers Out": 70, "Name": "Roger"},
+          {"Numbers In": 40, "Numbers Out": 50, "Name": "Mick"}
+        ]
+        
+        $('#Example1').visify(numberSwappin, "Name", ["Numbers In", "Numbers Out"], {'barWidth': 50, 'barSpacing' : 55});
+
+        //Byte Example
+        topTransferData = [
+          {"Uploaded Data": 1003233330, "Downloaded Data": 324288823, "Copied Data": 903499494, "Name": "Jimmy"},
+          {"Uploaded Data": 339944893, "Downloaded Data": 0, "Copied Data": 349394390, "Name": "Clyde"},
+          {"Uploaded Data": 0, "Downloaded Data": 2082492939, "Copied Data": 0, "Name": "Roger"},
+          {"Uploaded Data": 28239899, "Downloaded Data": 1100000000, "Copied Data": 392999023, "Name": "Mick"}
+        ]
+        
+        $('#ByteExample1').visify(topTransferData, "Name", ["Uploaded Data", "Downloaded Data", "Copied Data"], {'barWidth': 50, 'barSpacing' : 55, 'converter': ByteMe});
       })
     </script>
   </body>
