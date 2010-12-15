@@ -6,64 +6,38 @@
 
 //THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 (function( $ ) {
   
-  function ByteMe(size) {
-    this.byteForm = parseFloat(size);  
-    this.Nearest(); 
-  };
-
-  ByteMe.prototype.ToKB = function() {
-    return this.byteForm / 1024.0;
-  };
-
-  ByteMe.prototype.ToMB = function() {
-    return this.byteForm / Math.pow(1024.0, 2);
-  };
-
-  ByteMe.prototype.ToGB = function() {
-    return this.byteForm / Math.pow(1024.0, 3);
-  };
-
-  ByteMe.prototype.ToTB = function() {
-    return this.byteForm / Math.pow(1024.0, 4);
-  };
-
-  ByteMe.prototype.ToPB = function() {
-    return this.byteForm / Math.pow(1024.0, 5);
-  };
-
-  ByteMe.prototype.ToXB = function() {
-    return this.byteForm / Math.pow(1024.0, 6);
-  };
-
-  ByteMe.prototype.Nearest = function() {
-    switch (true) {
-      case (this.byteForm > 0.0 && this.byteForm < 1024.0): this.nearestiUnitSize = this.byteForm; this.nearestUnit = "B"; break;
-      case (this.byteForm > 1024.0 && this.byteForm < (Math.pow(1024.0, 2) - 1)): this.nearestUnitSize = this.ToKB(); this.nearestUnit = "KB"; break;
-      case (this.byteForm > (Math.pow(1024.0, 2)) && this.byteForm < (Math.pow(1024.0, 3) - 1)): this.nearestUnitSize = this.ToMB(); this.nearestUnit = "MB"; break;
-      case (this.byteForm > (Math.pow(1024.0, 3)) && this.byteForm < (Math.pow(1024.0, 4) - 1)): this.nearestUnitSize = this.ToGB(); this.nearestUnit = "GB"; break;
-      case (this.byteForm > (Math.pow(1024.0, 4)) && this.byteForm < (Math.pow(1024.0, 5) - 1)): this.nearestUnitSize = this.ToTB(); this.nearestUnit = "TB"; break;
-      case (this.byteForm > (Math.pow(1024.0, 5)) && this.byteForm < (Math.pow(1024.0, 6) - 1)): this.nearestUnitSize = this.ToPB(); this.nearestUnit = "PB"; break;
-      default : this.nearestUnitSize = this.ToXB(); this.nearestUnit = "XB"; break;
+  function NothingMe(size) {
+    //Initialize at the bottom of the class so it is called when all the methods are available 
+    this.ToNothing = function() {
+      return this.passedValue;
     };
+
+    this.Nearest = function() {
+      switch (true) {
+        case this.passedValue > 0.0 : this.nearestUnitSize = this.ToNothing(); this.nearestUnit = ""; break;
+        default : this.nearestUnitSize = this.ToNothing(); this.nearestUnit = ""; break;
+      };
+    };
+
+    this.Round = function() {
+      return Math.round(this.nearestUnitSize * 100) / 100;
+    };
+
+    this.ConvertTo = function(target) {
+      switch(target) {
+        case "" : return this.ToNothing(); break;
+        default : return this.ToNothing(); break;
+      };
+    };
+  
+    //initialize
+    this.passedValue = parseFloat(size);  
+    this.Nearest(); 
+
   };
-
-  ByteMe.prototype.Round = function() {
-    return Math.round(this.nearestUnitSize * 100) / 100;
-  }
-
-  ByteMe.prototype.ConvertTo = function(target) {
-    switch(target) {
-      case "B" : return this.byteForm; break;
-      case "KB" : return this.ToKB(); break;
-      case "MB" : return this.ToMB(); break;
-      case "GB" : return this.ToGB(); break;
-      case "TB" : return this.ToTB(); break;
-      case "PB" : return this.ToPB(); break;
-      default : return this.ToXB(); break;
-    }
-  }
 
   $.fn.visify = function(data, subjectTitle, dataTitles, options) {
 
@@ -75,42 +49,19 @@
       'fontFamily'      : this.css("font-family"),
       'colors'          : [{"R": 210, "G": 49, "B": 42}, {"R": 45, "G": 146, "B": 255}, {"R": 249, "G": 159, "B": 0}, {"R": 105, "G": 151, "B": 47}],
       'graphLines'      : 5,
-      'rounder'         : 1
-    }
+      'rounder'         : 1,
+      'converter'       : NothingMe
+    };
 
     return this.each(function() {
       if (options) { 
         $.extend(settings, options); //merge the options
-      }
+      };
       containerDiv = $(this); 
       //plugin code
      
-      var barWidth = settings['barWidth'], barSpacing = settings['barSpacing'], backgroundColor = settings['backgroundColor'], fontSize = settings['fontSize'], fontFamily = settings['fontFamily'], colors = settings['colors'], graphLines = settings['graphLines'], rounder = settings['rounder']; //set the settings to variables
-
-      //find the max value
-      var maxArray = [];
-      for (var i = 0; i < data.length; i += 1) {
-        var total = 0;
-        for (var ii = 0; ii < dataTitles.length; ii += 1 ) {
-          total += data[i][dataTitles[ii]];
-        };
-        maxArray.push(total);
-      };
-      var max = Math.max.apply(Math, maxArray);
+      var barWidth = settings['barWidth'], barSpacing = settings['barSpacing'], backgroundColor = settings['backgroundColor'], fontSize = settings['fontSize'], fontFamily = settings['fontFamily'], colors = settings['colors'], graphLines = settings['graphLines'], rounder = settings['rounder'], Converter = settings['converter']; //set the settings to variables
       
-    
-      maxConverted = new ByteMe(max); //We use this to scale every other value to the maximum's unit. This allows for appropriate scale
-      max = maxConverted.nearestUnitSize;
-
-      var graphLeftBound = 60, graphTopBound = 10,graphHeight = parseInt(containerDiv .height() - 80), graphWidth = parseInt(containerDiv.width() - 90);
-    
-      var multiplier = graphHeight / (max + (max * 0.1)); //calculate what we need to multiply every other value to, so that it is proportional to the MAX
-      var graphIncrement = 0; //value that the graph lines and markers should be incremented
-      do {
-        graphIncrement = Math.round((max / graphLines) * rounder) / rounder; //split the graph into however many lines you want to show
-        rounder = rounder * 10;
-      } while (graphIncrement == 0);//auotmatically caluclate how many decimal places are needed. If all the values are under 1, then we should show at least one tenth of one
-
       if ($.browser.msie == true) { //make compatible with excanvas.js for IE
         var canvas = document.createElement('canvas');
         $(canvas).height(containerDiv.height()).width(containerDiv .width());
@@ -122,10 +73,35 @@
         containerDiv.append(canvas);
         var canvasCxt = document.getElementById(containerDiv.attr('id') + '_canvas').getContext('2d');
       }
-      
+
+      //find the max value
+      var maxArray = [];
+      for (var i = 0; i < data.length; i += 1) {
+        var total = 0;
+        for (var ii = 0; ii < dataTitles.length; ii += 1 ) {
+          total += data[i][dataTitles[ii]];
+        };
+        maxArray.push(total);
+      };
+      var max = Math.max.apply(Math, maxArray);
+ 
+      maxConverted = new Converter(max); //We use this to scale every other value to the maximum's unit. This allows for appropriate scale
+      max = maxConverted.nearestUnitSize;
+
+      var graphTopBound = 10,graphHeight = parseInt(containerDiv .height() - 80);
+    
+      var multiplier = graphHeight / (max + (max * 0.1)); //calculate what we need to multiply every other value to, so that it is proportional to the MAX
+      var graphIncrement = 0; //value that the graph lines and markers should be incremented
+      do {
+        graphIncrement = Math.round((max / graphLines) * rounder) / rounder; //split the graph into however many lines you want to show
+        rounder = rounder * 10;
+      } while (graphIncrement == 0);//auotmatically caluclate how many decimal places are needed. If all the values are under 1, then we should show at least one tenth of one
+
       //prep canvas style etc to draw the graph lines
       canvasCxt.font = fontSize + 'px "' + fontFamily + '"';
       canvasCxt.textAlign = "right";
+      var graphLeftBound = canvasCxt.measureText(Math.round(graphIncrement * 2 * (graphLines + 1) * rounder)/rounder + maxConverted.nearestUnit).width + 8, graphWidth = parseInt(containerDiv.width()) - (graphLeftBound + graphLeftBound/2);
+      
       currentPosition = graphHeight - graphIncrement * multiplier;
       graphMark = graphIncrement; // label for the first line mark above zero
       canvasCxt.lineWidth = 2;
@@ -153,9 +129,9 @@
         for (var ii = 0; ii < dataTitles.length; ii += 1) { //go through each value of the given object
           var color = colors[ii]; //grab the color out of the color array
           if (data[i][dataTitles[ii]] > 0) {
-            var byteObject = new ByteMe(data[i][dataTitles[ii]]).ConvertTo(maxConverted.nearestUnit); //gather the converted size
-            total += byteObject; //keep a total tally for the label
-            var calculatedHeight = (byteObject * multiplier) - barsBelow; //actual pix placement on the canvas. decrement if there is a bar below so that it its on top of the other bar
+            var convertedObject = new Converter(data[i][dataTitles[ii]]).ConvertTo(maxConverted.nearestUnit); //gather the converted size
+            total += convertedObject; //keep a total tally for the label
+            var calculatedHeight = (convertedObject * multiplier) - barsBelow; //actual pix placement on the canvas. decrement if there is a bar below so that it its on top of the other bar
             var barTop = barBottom - calculatedHeight; //draw from the topleft to the bottom right
             canvasCxt.fillStyle = backgroundColor; //color in the back of the bar. comment out this line to make the bars transparent
             canvasCxt.fillRect(barLeft, barTop, barWidth, barBottom - barTop);//color in the back of the bar. comment out this line to make the bars transparent
@@ -164,14 +140,14 @@
             canvasCxt.fillStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 0.65)'; //bar's fill style
             canvasCxt.fillRect(barLeft, barTop, barWidth, barBottom - barTop);//fill it up with color
             canvasCxt.strokeRect(barLeft, barTop, barWidth, barBottom - barTop);//outline it
-            var label = Math.round(byteObject * 100) / 100 + maxConverted.nearestUnit; //generate the label
+            var label = Math.round(convertedObject * 100) / 100 + maxConverted.nearestUnit; //generate the label
             canvasCxt.fillStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 1.0)'; //style the label
             canvasCxt.font = 'bold ' + fontSize + 'px "' + fontFamily + '"';
             if (canvasCxt.measureText(label).width < (barBottom - barTop) - 10) { //check to see if the label will fit within the bar segment with space to spare (5px on each side)
               canvasCxt.rotate(-90 * Math.PI / 180); //rotate the canvas 90 degress so we have vertical text
               canvasCxt.textAlign = "center"; //center the text
               canvasCxt.textBaseline = "middle";
-              canvasCxt.fillText(label , -(barBottom - (calculatedHeight/2)), barLeft + barWidth/2);//write the text in the middle of the bar segment
+              canvasCxt.fillText(label , -(barBottom - (calculatedHeight/2) + 2), barLeft + barWidth/2);//write the text in the middle of the bar segment + 2 for the top border stroke width
               canvasCxt.rotate(90 * Math.PI / 180); //rotate the canvas back to 0 degrees for futher drawing
               canvasCxt.textBaseline = "alphabetic";
             }
@@ -207,12 +183,12 @@
       for (var i = 0; i < dataTitles.length; i += 1) {  
         var color = colors[i]; //get the same color as used in the respective bar segment
         canvasCxt.fillStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 1)';
-        canvasCxt.fillText(dataTitles[i], leftAdjust, canvasBottom - 4); //write the dataTitle
+        canvasCxt.fillText(dataTitles[i], leftAdjust, canvasBottom - fontSize/2); //write the dataTitle
         leftAdjust -= canvasCxt.measureText(dataTitles[i]).width + 8; //adjust for the dataTitle text width
         canvasCxt.strokeStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 0.95)';
         canvasCxt.fillStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 0.65)';
-        canvasCxt.fillRect(leftAdjust, canvasBottom - 2, -(fontSize + 2), -(fontSize + 2)); // fill the rectangle
-        canvasCxt.strokeRect(leftAdjust, canvasBottom - 1, -(fontSize + 2), -(fontSize + 2)); //draw the rectangle
+        canvasCxt.fillRect(leftAdjust, canvasBottom - fontSize/2/2, -(fontSize + 2), -(fontSize + 2)); // fill the rectangle
+        canvasCxt.strokeRect(leftAdjust, canvasBottom - fontSize/2/2, -(fontSize + 2), -(fontSize + 2)); //draw the rectangle
         leftAdjust -= (fontSize + 30);//space between key items
       }
       canvasCxt.closePath();
@@ -222,4 +198,4 @@
   }; //end plugin function
 
 
-})( jQuery);
+})( jQuery );
