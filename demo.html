@@ -212,7 +212,7 @@
       <p>
        Want to do the same thing to show data transfer per second? Simply include the <a href="https://github.com/danielwestendorf/Visify.js/raw/master/jquery.visify.bytemeseconds.js">ByteMeSeconds</a> class, and pass it as an option.
       </p>
-      <div id="ByteExample2" class="body" style="width: 100%; height: 400px; font-family: Arial; background-color: #fff; font-size: 15px;"></div>
+      <div id="ByteExample2" class="body" style="width: 100%; height: 400px; font-family: Arial; background-color: #fff; font-size: 13px;"></div>
       <p>
         <code>
           topTransferPerSecond = [<br />
@@ -222,7 +222,7 @@
             &nbsp;{"Uploaded Data": 28239899, "Downloaded Data": 1100000000, "Name": "Mick"}<br />
           ]<br />
           <br />
-        $('#ByteExample1').visify(topTransferPerSecond, "Name", ["Uploaded Data", "Downloaded Data"], {'barWidth': 50, 'barSpacing' : 55, 'converter': ByteMeSeconds});
+        $('#ByteExample1').visify(topTransferPerSecond, "Name", ["Uploaded Data", "Downloaded Data"], {'barWidth': 50, 'barSpacing' : 65, 'converter': ByteMeSeconds});
         </code>
       </p>
     </div>
@@ -278,7 +278,7 @@
           {"Uploaded Data": 28239899, "Downloaded Data": 1100000000, "Name": "Mick"}
         ]
         
-        $('#ByteExample2').visify(topTransferPerSecond, "Name", ["Uploaded Data", "Downloaded Data"], {'barWidth': 50, 'barSpacing' : 55, 'converter': ByteMeSeconds});
+        $('#ByteExample2').visify(topTransferPerSecond, "Name", ["Uploaded Data", "Downloaded Data"], {'barWidth': 50, 'barSpacing' : 65, 'converter': ByteMeSeconds});
       })
     </script>
   </body>
