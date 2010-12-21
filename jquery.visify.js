@@ -160,25 +160,31 @@
         canvasCxt.font = 'normal ' + fontSize + 'px "' + fontFamily + '"';
         var cursor = graphHeight + fontSize + 4;
         if (canvasCxt.measureText(title).width > (barSpacing + barWidth + 5)) {
-          var testString = ""
-          var maxCharacters = 0
+          var testString = "";
+          var maxCharacters = 0;
           for (var c = 0; c < title.length; c += 1) {
             if (canvasCxt.measureText(testString).width < (barSpacing + barWidth + 5)) {
               testString += title[c];
               maxCharacters += 1;
             }
           }
-          var count = maxCharacters;
-
+    
+          var lines = [];
+          var prevStop = 0;
+          var tempString = title;
           do {
-            count -= 1;
-          } while (count > 1 && title[count] !== " ")
-          var line1 = title.slice(0, count);
-          var line2 = title.slice(count, title.length);
-          canvasCxt.fillText(line1, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 1
-          cursor += fontSize + 4;
-          canvasCxt.fillText(line2, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 2
-          cursor += fontSize + 4;
+            var count = maxCharacters;
+            do {
+              count -= 1;
+            } while (count > 1 && tempString[count] !== " ")
+            lines.push(title.slice(prevStop, count));
+            tempString = tempString.slice(count, tempString.length);
+            prevStop = count;
+          } while (prevStop < tempString.length);
+          for (var line = 0; line < lines.length; line += 1) {
+            canvasCxt.fillText(lines[line], barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 1
+            cursor += fontSize + 4;
+          }
         } else {
           canvasCxt.fillText(title, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title
           cursor += fontSize + 4;
