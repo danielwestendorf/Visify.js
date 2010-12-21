@@ -180,7 +180,9 @@
             lines.push(title.slice(prevStop, count));
             tempString = tempString.slice(count, tempString.length);
             prevStop = count;
-          } while (prevStop < tempString.length);
+            alert(tempString)
+          } while (canvasCxt.measureText(tempString).width > barSpacing + barWidth + 5);
+          lines.push(tempString)
           for (var line = 0; line < lines.length; line += 1) {
             canvasCxt.fillText(lines[line], barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 1
             cursor += fontSize + 4;
