@@ -158,9 +158,33 @@
         var title = data[i][subjectTitle]; //get the subject title
         canvasCxt.fillStyle = "#000000";
         canvasCxt.font = 'normal ' + fontSize + 'px "' + fontFamily + '"';
-        canvasCxt.fillText(title, barLeft + barWidth / 2, graphHeight + fontSize + 4, barSpacing + barWidth + 5); //write the subject title
+        var cursor = graphHeight + fontSize + 4;
+        if (canvasCxt.measureText(title).width > (barSpacing + barWidth + 5)) {
+          var testString = ""
+          var maxCharacters = 0
+          for (var i = 0; i < title.length; i += 1) {
+            if (canvasCxt.measureText(testString).width < (barSpacing + barWidth + 5)) {
+              testString += title[i];
+              maxCharacters += 1;
+            }
+          }
+          var count = maxCharacters;
+
+          do {
+            count -= 1;
+          } while (count > 1 && title[count] !== " ")
+          var line1 = title.slice(0, count);
+          var line2 = title.slice(count, title.length);
+          canvasCxt.fillText(line1, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 1
+          cursor += fontSize + 4;
+          canvasCxt.fillText(line2, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 2
+          cursor += fontSize + 4;
+        } else {
+          canvasCxt.fillText(title, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title
+          cursor += (fontSize + 4) * 2;
+        }
         canvasCxt.fillStyle = "#000000";
-        canvasCxt.fillText("Total: " + (Math.round(total * 100) / 100) + maxConverted.nearestUnit, barLeft + barWidth / 2, graphHeight + (fontSize * 2) + 8, barSpacing + barWidth + 10); //write the total
+        canvasCxt.fillText("Total: " + (Math.round(total * 100) / 100) + maxConverted.nearestUnit, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 10); //write the total
         barLeft += barWidth + barSpacing; //increment the spacing before moving on to the next object
       }
       canvasCxt.closePath();
