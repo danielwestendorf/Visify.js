@@ -181,7 +181,7 @@
           cursor += fontSize + 4;
         } else {
           canvasCxt.fillText(title, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title
-          cursor += (fontSize + 4) * 2;
+          cursor += fontSize + 4;
         }
         canvasCxt.fillStyle = "#000000";
         canvasCxt.fillText("Total: " + (Math.round(total * 100) / 100) + maxConverted.nearestUnit, barLeft + barWidth / 2, cursor, barSpacing + barWidth + 10); //write the total
