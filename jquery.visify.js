@@ -162,9 +162,9 @@
         if (canvasCxt.measureText(title).width > (barSpacing + barWidth + 5)) {
           var testString = ""
           var maxCharacters = 0
-          for (var i = 0; i < title.length; i += 1) {
+          for (var c = 0; c < title.length; c += 1) {
             if (canvasCxt.measureText(testString).width < (barSpacing + barWidth + 5)) {
-              testString += title[i];
+              testString += title[c];
               maxCharacters += 1;
             }
           }
