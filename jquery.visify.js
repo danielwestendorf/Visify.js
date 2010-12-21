@@ -156,10 +156,11 @@
           }
         } 
         var title = data[i][subjectTitle]; //get the subject title
-        canvasCxt.fillStyle = "#000";
+        canvasCxt.fillStyle = "#000000";
         canvasCxt.font = 'normal ' + fontSize + 'px "' + fontFamily + '"';
-        canvasCxt.fillText(title, barLeft + barWidth / 2, graphHeight + fontSize + 4); //write the subject title
-        canvasCxt.fillText("Total: " + (Math.round(total * 100) / 100) + maxConverted.nearestUnit, barLeft + barWidth / 2, graphHeight + (fontSize * 2) + 8); //write the total
+        canvasCxt.fillText(title, barLeft + barWidth / 2, graphHeight + fontSize + 4, barSpacing + barWidth + 5); //write the subject title
+        canvasCxt.fillStyle = "#000000";
+        canvasCxt.fillText("Total: " + (Math.round(total * 100) / 100) + maxConverted.nearestUnit, barLeft + barWidth / 2, graphHeight + (fontSize * 2) + 8, barSpacing + barWidth + 10); //write the total
         barLeft += barWidth + barSpacing; //increment the spacing before moving on to the next object
       }
       canvasCxt.closePath();
