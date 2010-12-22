@@ -88,7 +88,7 @@
       maxConverted = new Converter(max); //We use this to scale every other value to the maximum's unit. This allows for appropriate scale
       max = maxConverted.nearestUnitSize;
 
-      var graphTopBound = fontSize + 4,graphHeight = parseInt(containerDiv .height() - 80);
+      var graphTopBound = fontSize + 10, graphHeight = parseInt(containerDiv .height() - 80);
     
       var multiplier = graphHeight / (max + (max * 0.1)); //calculate what we need to multiply every other value to, so that it is proportional to the MAX
       var graphIncrement = 0; //value that the graph lines and markers should be incremented
