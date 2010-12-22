@@ -88,7 +88,7 @@
       maxConverted = new Converter(max); //We use this to scale every other value to the maximum's unit. This allows for appropriate scale
       max = maxConverted.nearestUnitSize;
 
-      var graphTopBound = 10,graphHeight = parseInt(containerDiv .height() - 80);
+      var graphTopBound = fontSize + 4,graphHeight = parseInt(containerDiv .height() - 80);
     
       var multiplier = graphHeight / (max + (max * 0.1)); //calculate what we need to multiply every other value to, so that it is proportional to the MAX
       var graphIncrement = 0; //value that the graph lines and markers should be incremented
@@ -163,25 +163,23 @@
           var testString = "";
           var maxCharacters = 0;
           for (var c = 0; c < title.length; c += 1) {
-            if (canvasCxt.measureText(testString).width < (barSpacing + barWidth + 5)) {
+            if (canvasCxt.measureText(testString).width < (barSpacing + barWidth - 5)) {
               testString += title[c];
               maxCharacters += 1;
             }
           }
     
           var lines = [];
-          var prevStop = 0;
           var tempString = title;
           do {
             var count = maxCharacters;
-            do {
+            while (count > 1 && tempString[count] !== " ") {
               count -= 1;
-            } while (count > 1 && tempString[count] !== " ")
-            lines.push(title.slice(prevStop, count));
+            };
+            lines.push(tempString.slice(0, count));
             tempString = tempString.slice(count, tempString.length);
-            prevStop = count;
-            alert(tempString)
-          } while (canvasCxt.measureText(tempString).width > barSpacing + barWidth + 5);
+        
+          } while (canvasCxt.measureText(tempString).width > (barSpacing + barWidth + 5));
           lines.push(tempString)
           for (var line = 0; line < lines.length; line += 1) {
             canvasCxt.fillText(lines[line], barLeft + barWidth / 2, cursor, barSpacing + barWidth + 5); //write the subject title line 1
@@ -212,16 +210,15 @@
       canvasCxt.textAlign = "right";
       canvasCxt.font = 'bold ' + fontSize + 'px "' + fontFamily + '"';
       var leftAdjust = graphLeftBound + graphWidth;
-      var canvasBottom = containerDiv.height();
       for (var i = 0; i < dataTitles.length; i += 1) {  
         var color = colors[i]; //get the same color as used in the respective bar segment
         canvasCxt.fillStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 1)';
-        canvasCxt.fillText(dataTitles[i], leftAdjust, canvasBottom - fontSize/2); //write the dataTitle
+        canvasCxt.fillText(dataTitles[i], leftAdjust, fontSize + 2); //write the dataTitle
         leftAdjust -= canvasCxt.measureText(dataTitles[i]).width + 8; //adjust for the dataTitle text width
         canvasCxt.strokeStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 0.95)';
         canvasCxt.fillStyle = 'rgba(' + color["R"] + ', ' + color["G"] + ', ' + color["B"] + ', 0.65)';
-        canvasCxt.fillRect(leftAdjust, canvasBottom - fontSize/2/2, -(fontSize + 2), -(fontSize + 2)); // fill the rectangle
-        canvasCxt.strokeRect(leftAdjust, canvasBottom - fontSize/2/2, -(fontSize + 2), -(fontSize + 2)); //draw the rectangle
+        canvasCxt.fillRect(leftAdjust, 2, -(fontSize + 2), (fontSize + 2)); // fill the rectangle
+        canvasCxt.strokeRect(leftAdjust, 2, -(fontSize + 2), (fontSize + 2)); //draw the rectangle
         leftAdjust -= (fontSize + 30);//space between key items
       }
       canvasCxt.closePath();
