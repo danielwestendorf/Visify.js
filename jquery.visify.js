@@ -176,6 +176,8 @@
             while (count > 1 && tempString.charAt(count) !== " ") {
               count -= 1;
             };
+            if (count == 1) { count = maxCharacters }; //if there aren't any white spaces less than the maxCharacters count, then go ahead a split up the title
+
             lines.push(tempString.slice(0, count));
             tempString = tempString.slice(count, tempString.length);
         
