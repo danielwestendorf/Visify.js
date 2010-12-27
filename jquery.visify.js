@@ -164,16 +164,16 @@
           var maxCharacters = 0;
           for (var c = 0; c < title.length; c += 1) {
             if (canvasCxt.measureText(testString).width < (barSpacing + barWidth - 5)) {
-              testString += title[c];
+              testString += title.charAt(c);
               maxCharacters += 1;
             }
-          }
+          };
     
           var lines = [];
           var tempString = title;
           do {
             var count = maxCharacters;
-            while (count > 1 && tempString[count] !== " ") {
+            while (count > 1 && tempString.charAt(count) !== " ") {
               count -= 1;
             };
             lines.push(tempString.slice(0, count));
