@@ -80,7 +80,8 @@
           &nbsp;'colors':&nbsp;&nbsp;&nbsp;[{"R": 210, "G": 49, "B": 42}, {"R": 45, "G": 146, "B": 255},<br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{"R": 249, "G": 159, "B": 0}, {"R": 105, "G": 151, "B": 47}],<br />
           &nbsp;'graphLines':&nbsp;&nbsp;&nbsp;5,<br />
           &nbsp;'rounder':&nbsp;&nbsp;&nbsp;1,<br />
-          &nbsp;'converter':&nbsp;&nbsp;&nbsp;ClassName<br />
+          &nbsp;'converter':&nbsp;&nbsp;&nbsp;ClassName,<br />
+          &nbsp;'resizeThrottle':&nbsp;&nbsp;&nbsp;50<br />
           }
         </code>
       </p>
@@ -180,13 +181,24 @@
         </tr>
         <tr>
           <td>
-            Converter
+            converter
           </td>
           <td>
             Class
           </td>
           <td>
             This is the name of the Custom Converter class you want to modify the values by (treated like normal integers if not specified)
+          </td>
+        </tr>
+        <tr>
+          <td>
+            resizeThrottle
+          </td>
+          <td>
+            Integer
+          </td>
+          <td>
+            Represents the millisecond value to use to throttle the resize event for browsers that fire continuous resize messages.
           </td>
         </tr>
       </table><br />

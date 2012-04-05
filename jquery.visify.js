@@ -41,6 +41,9 @@
 
   $.fn.visify = function(data, subjectTitle, dataTitles, options) {
 
+    var base = this;
+    var resizeTimer;
+
     var settings = {
       'barSpacing'      : 55,
       'backgroundColor' : this.css("background-color"),
@@ -49,14 +52,36 @@
       'colors'          : [{"R": 210, "G": 49, "B": 42}, {"R": 45, "G": 146, "B": 255}, {"R": 249, "G": 159, "B": 0}, {"R": 105, "G": 151, "B": 47}],
       'graphLines'      : 5,
       'rounder'         : 1,
-      'converter'       : NothingMe
+      'converter'       : NothingMe,
+      'resizeThrottle'  : 50
     };
 
-    return this.each(function() {
+    this.resizeAllTheThings = function() {
+      base.each(function(){
+        base.draw(this);
+      })
+    };
+
+    //
+    $(window).resize(function() {
+      if (resizeTimer == undefined) {
+        resizeTimer = setTimeout(function() {
+          base.resizeAllTheThings();
+        },settings.resizeThrottle);
+      } else {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          base.resizeAllTheThings();
+        },settings.resizeThrottle);
+      };
+    });
+
+    this.draw = function(element) {
       if (options) { 
         $.extend(settings, options); //merge the options
       };
-      containerDiv = $(this); 
+      containerDiv = $(element); 
+      containerDiv.html('');
       //plugin code
       if (options['barWidth'] == null) {
         var barWidth = 0;
@@ -234,8 +259,11 @@
         canvasCxt.strokeRect(leftAdjust, 2, -(fontSize + 2), (fontSize + 2)); //draw the rectangle
         leftAdjust -= (fontSize + 30);//space between key items
       }
-      canvasCxt.closePath();
-   
+      canvasCxt.closePath
+    };
+
+    return this.each(function() {
+      base.draw(this);
     }); // end return
 
   }; //end plugin function
