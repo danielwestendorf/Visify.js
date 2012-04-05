@@ -29,7 +29,7 @@
     <div class="container">
       <div class="title">A QUICK EXPLAINATION</div>
       <p>
-        As it stands, the Visify.js jQuery plugin provided on this page is ment to create stacked bar charts. It enables you to create classes to convert the data to a human readable format, and pass it to the plugin. It can be styled via CSS and accepts some options for your customization. It can handle multiple bar segments if multiple data values are passed per object, creating stacked bars. It uses the <code>&lt;canvas&gt;</code> tag to draw the graph. If the canvas tag is not supported (Lookin' at you IE), <a href="http://excanvas.sourceforge.net/">excanvas.js</a> will be included.
+        As it stands, the Visify.js jQuery plug-in provided on this page is meant to create stacked bar charts. It enables you to create classes to convert the data to a human readable format, and pass it to the plug-in. It can be styled via CSS and accepts some options for your customization. It can handle multiple bar segments if multiple data values are passed per object, creating stacked bars. It uses the <code>&lt;canvas&gt;</code> tag to draw the graph. If the canvas tag is not supported (Lookin' at you IE), <a href="http://excanvas.sourceforge.net/">excanvas.js</a> will be included.
       </p>
     </div>
     <div class="container">
@@ -55,7 +55,7 @@
         <code>
           $('#myBlockElement').visify(data, subjectKey, dataKeys, optionsHash);
         </code><br /><br />
-        THE DATA: All of the data passed to the plugin must be in byte form. It will be converted to KB, MB, GB, TB, PB, or XB appropriately. The data must be an array of Hashes. Each hash should have the same keys and a subject/name for each data set. Add more keys for more bar segments.<br /><br /> 
+        THE DATA: All of the data passed to the plug-in must be in byte form. It will be converted to KB, MB, GB, TB, PB, or XB appropriately. The data must be an array of Hashes. Each hash should have the same keys and a subject/name for each data set. Add more keys for more bar segments.<br /><br /> 
         <code>
           numberSwappin = [<br />
               &nbsp;{"Numbers In": 10, "Numbers Out": 44, "Name": "Jimmy"},<br />
@@ -64,7 +64,7 @@
               &nbsp;{"Numbers In": 40, "Numbers Out": 50, "Name": "Mick"}<br />
           ]
         </code><br /> <br />
-        THE SUBJECT AND DATA KEYS: The subject key should be a JavaScript string of the key representing your dataset's name/title/subject. The data keys should be a Javascript Array of strings representing the keys of your data values.<br /><br />
+        THE SUBJECT AND DATA KEYS: The subject key should be a JavaScript string of the key representing your dataset's name/title/subject. The data keys should be a JavaScript Array of strings representing the keys of your data values.<br /><br />
         <code>
           subjectKey = "Name";<br />
           dataKeys = ["Numbers In", "Numbers Out"]
@@ -98,7 +98,7 @@
             Integer
           </td>
           <td>
-            This is the width of each bar in pixles
+            This is the width of each bar in pixels (automatically calculated if no width is specified)
           </td>
         </tr>
         <tr>
@@ -109,7 +109,7 @@
             Integer
           </td>
           <td>
-            This is the space between each bar in pixles
+            This is the space between each bar in pixels
           </td>
         </tr>
         <tr>
@@ -120,7 +120,7 @@
             String
           </td>
           <td>
-            This is the background color you want the graph to have. It inherits the containing elment's CSS valueby default
+            This is the background color you want the graph to have. It inherits the containing element's CSS valueby default
           </td>
         </tr>
         <tr>
@@ -186,7 +186,7 @@
             Class
           </td>
           <td>
-            This is the name of the Custom Comverter class you want to modify the values by
+            This is the name of the Custom Converter class you want to modify the values by (treated like normal integers if not specified)
           </td>
         </tr>
       </table><br />
@@ -206,7 +206,7 @@
             &nbsp;{"Uploaded Data": 28239899, "Downloaded Data": 1100000000, "Copied Data": 392999023, "Name": "Mick"}<br />
           ]<br />
           <br />
-        $('#ByteExample1').visify(topTransferData, "Name", ["Uploaded Data", "Downloaded Data", "Copied Data"], {'barWidth': 50, 'barSpacing' : 55, 'converter': ByteMe});
+        $('#ByteExample1').visify(topTransferData, "Name", ["Uploaded Data", "Downloaded Data", "Copied Data"], {'barSpacing' : 55, 'converter': ByteMe});
         </code>
       </p>
       <p>
@@ -268,7 +268,7 @@
           {"Uploaded Data": 28239899, "Downloaded Data": 1100000000, "Copied Data": 392999023, "Name": "Mick"}
         ]
         
-        $('#ByteExample1').visify(topTransferData, "Name", ["Uploaded Data", "Downloaded Data", "Copied Data"], {'barWidth': 50, 'barSpacing' : 55, 'converter': ByteMe});
+        $('#ByteExample1').visify(topTransferData, "Name", ["Uploaded Data", "Downloaded Data", "Copied Data"], {'barSpacing' : 55, 'converter': ByteMe});
         
         //Byte Second Example
         topTransferPerSecond = [

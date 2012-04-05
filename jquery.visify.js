@@ -42,7 +42,6 @@
   $.fn.visify = function(data, subjectTitle, dataTitles, options) {
 
     var settings = {
-      'barWidth'        : 50,
       'barSpacing'      : 55,
       'backgroundColor' : this.css("background-color"),
       'fontSize'        : parseInt(this.css("font-size")),
@@ -59,9 +58,14 @@
       };
       containerDiv = $(this); 
       //plugin code
-     
-      var barWidth = settings['barWidth'], barSpacing = settings['barSpacing'], backgroundColor = settings['backgroundColor'], fontSize = settings['fontSize'], fontFamily = settings['fontFamily'], colors = settings['colors'], graphLines = settings['graphLines'], rounder = settings['rounder'], Converter = settings['converter']; //set the settings to variables
+      if (options['barWidth'] == null) {
+        var barWidth = 0;
+      } else {
+        var barWidth = options['barWidth']
+      };
       
+      var barSpacing = settings['barSpacing'] * 2, backgroundColor = settings['backgroundColor'], fontSize = settings['fontSize'], fontFamily = settings['fontFamily'], colors = settings['colors'], graphLines = settings['graphLines'], rounder = settings['rounder'], Converter = settings['converter']; //set the settings to variables 
+
       if ($.browser.msie == true) { //make compatible with excanvas.js for IE
         var canvas = document.createElement('canvas');
         $(canvas).height(containerDiv.height()).width(containerDiv .width());
@@ -101,6 +105,13 @@
       canvasCxt.font = fontSize + 'px "' + fontFamily + '"';
       canvasCxt.textAlign = "right";
       var graphLeftBound = canvasCxt.measureText(Math.round(graphIncrement * 2 * (graphLines + 1) * rounder)/rounder + maxConverted.nearestUnit).width + 8, graphWidth = parseInt(containerDiv.width()) - (graphLeftBound + graphLeftBound/2);
+      
+      if (options['barWidth'] == null) {
+        while (barWidth < barSpacing) {
+          barSpacing = barSpacing / 2;
+          barWidth = (containerDiv.width() - graphLeftBound - 5) / data.length - barSpacing;
+        }; 
+      };
       
       currentPosition = graphHeight - graphIncrement * multiplier;
       graphMark = graphIncrement; // label for the first line mark above zero
